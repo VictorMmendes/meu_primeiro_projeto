@@ -6,7 +6,7 @@
       <%= render @post %>
     </div>
   </div>
-  <%= form_with model: [ @post, Comment.new ], local: true do |form| %>
+  <%= form_with model: [ @post, Comment.new ] do |form| %>
     <div class="d-flex flex-column gap-2">
       <div>
         <%= form.label :content %><br>
@@ -17,7 +17,7 @@
       </div>
     </div>
   <% end %>
-  <div class="d-flex flex-column gap-2">
+  <div id="comments" class="d-flex flex-column gap-2">
     <% @post.comments.each do |comment| %>
         <div id="<%= dom_id(comment) %>" class="card">
           <div class="card-body">
@@ -25,9 +25,9 @@
             <p class="card-text"><%= truncate(comment.content.to_s, length: 160) %></p>
           </div>
           <div class="card-footer">
-            <%= button_to "", comment, 
+            <%= button_to "", [@post, comment],
               method: :delete,
-              form: { data: { turbo_confirm: "Tem certeza?", turbo_method: :delete, turbo_stream: true } },
+              form: { data: { turbo_confirm: "Tem certeza?" } },
               class: "bi bi-trash"
             %>
           </div>

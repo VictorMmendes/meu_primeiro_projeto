@@ -6,7 +6,7 @@
         <p class="card-text"><%= @comment.content %></p>
       </div>
       <div class="card-footer">
-        <%= button_to "", @comment, method: :delete, form: { data: { turbo_confirm: "Tem certeza?", turbo_stream: true } }, class: "bi bi-trash" %>
+        <%= button_to "", [@comment.post, @comment], method: :delete, form: { data: { turbo_confirm: "Tem certeza?" } }, class: "bi bi-trash" %>
       </div>
     </div>
   </template>
