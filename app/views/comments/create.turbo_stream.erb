@@ -1,0 +1,13 @@
+<turbo-stream action="append" target="comments">
+  <template>
+    <div id="<%= dom_id(@comment) %>" class="card">
+      <div class="card-body">
+        <h5 class="card-title"><%= @comment.user.name %></h5>
+        <p class="card-text"><%= @comment.content %></p>
+      </div>
+      <div class="card-footer">
+        <%= button_to "", @comment, method: :delete, form: { data: { turbo_confirm: "Tem certeza?", turbo_stream: true } }, class: "bi bi-trash" %>
+      </div>
+    </div>
+  </template>
+</turbo-stream>

@@ -1,13 +1,43 @@
 <% content_for :title, @post.title.to_s.presence || "Post" %>
 
-<div class="card mb-3">
-  <div class="card-body">
-    <%= render @post %>
+<div class="d-flex flex-column gap-2">
+  <div class="card">
+    <div class="card-body">
+      <%= render @post %>
+    </div>
   </div>
-</div>
+  <%= form_with model: [ @post, Comment.new ], local: true do |form| %>
+    <div class="d-flex flex-column gap-2">
+      <div>
+        <%= form.label :content %><br>
+        <%= form.text_area :content, class: "form-control", rows: 5 %>
+      </div>
+      <div class="d-flex justify-content-end">
+        <%= form.submit 'Add Comment', class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+  <div class="d-flex flex-column gap-2">
+    <% @post.comments.each do |comment| %>
+        <div id="<%= dom_id(comment) %>" class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= comment.user.name %></h5>
+            <p class="card-text"><%= truncate(comment.content.to_s, length: 160) %></p>
+          </div>
+          <div class="card-footer">
+            <%= button_to "", comment, 
+              method: :delete,
+              form: { data: { turbo_confirm: "Tem certeza?", turbo_method: :delete, turbo_stream: true } },
+              class: "bi bi-trash"
+            %>
+          </div>
+        </div>
+    <% end %>
+  </div>
 
-<div class="d-flex gap-2">
-  <%= link_to "Edit", edit_post_path(@post), class: "btn btn-secondary" %>
-  <%= link_to "Back", posts_path, class: "btn btn-outline-secondary" %>
-  <%= button_to "Destroy", @post, method: :delete, form: { data: { turbo_confirm: "Tem certeza?" } }, class: "btn btn-danger" %>
+  <div class="d-flex gap-2">
+    <%= link_to "Edit", edit_post_path(@post), class: "btn btn-secondary" %>
+    <%= link_to "Back", posts_path, class: "btn btn-outline-secondary" %>
+    <%= button_to "Destroy", @post, method: :delete, form: { data: { turbo_confirm: "Tem certeza?" } }, class: "btn btn-danger" %>
+  </div>
 </div>
